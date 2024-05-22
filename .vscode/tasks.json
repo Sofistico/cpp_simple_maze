@@ -8,10 +8,10 @@
                 "-fcolor-diagnostics",
                 "-fansi-escape-codes",
                 "-g",
-                "${file}",
+                "${workspaceFolder}\\src\\*.cpp",
                 "-std=c++23",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${workspaceFolder}\\out\\main.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"

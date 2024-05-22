@@ -8,4 +8,5 @@ add_executable(cpp_simple_maze src/main.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set(CMAKE_CXX_STANDARD 23)
 include(CPack)
