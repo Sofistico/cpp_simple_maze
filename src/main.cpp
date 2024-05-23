@@ -9,12 +9,13 @@ const int MAX_MAP_SIZE = WIDTH * HEIGHT;
 const int MAX_ROOMS = 4;
 const int MAX_ROOM_SIZE = 8;
 const int MIN_ROOM_SIZE = 4;
+const int* ROOM_POINTS[MAX_ROOMS];
 
 struct tile {
     int x, y;
     // true is wall and false is floor
     bool is_wall;
-    tile(int x, int y, bool is_wall) : x(x), y(y), is_wall(is_wall) {};
+    tile(int x, int y, bool is_wall) : x{x}, y{y}, is_wall{is_wall} {};
     tile() {};
 
     inline const char return_tile() {
@@ -35,9 +36,9 @@ int get_y(int i) {
 
 tile* initialize_map() {
     static tile tiles[MAX_MAP_SIZE]{};
-    for (int x = 0; x < WIDTH; x++) {
-        for (int y = 0; y < HEIGHT; y++) {
-            int i = get_index(x, y);
+    for (int x{0}; x < WIDTH; x++) {
+        for (int y{0}; y < HEIGHT; y++) {
+            int i{get_index(x, y)};
             tiles[i] = {x, y, true};
             // std::cout << tiles[i].return_tile();
         }
@@ -48,13 +49,13 @@ tile* initialize_map() {
 }
 
 void create_rooms(tile* arr) {
-    for (int i = 0; i < MAX_ROOMS; i++) {
-        int randomInt = std::rand() % MAX_MAP_SIZE;
-        int size = (std::rand() % (MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1)) + MIN_ROOM_SIZE;
-        int x = get_x(randomInt);
-        int y = get_y(randomInt);
-        int max_x = x + size;
-        int max_y = y + size;
+    for (int i{0}; i < MAX_ROOMS; i++) {
+        int randomInt{std::rand() % MAX_MAP_SIZE};
+        int size{(std::rand() % (MAX_ROOM_SIZE - MIN_ROOM_SIZE + 1)) + MIN_ROOM_SIZE};
+        int x{get_x(randomInt)};
+        int y{get_y(randomInt)};
+        int max_x{x + size};
+        int max_y{y + size};
 
         // Ensure max_x and max_y do not exceed map boundaries
         if (max_x > WIDTH) {
@@ -63,20 +64,21 @@ void create_rooms(tile* arr) {
         if (max_y > HEIGHT) {
             max_y = HEIGHT;
         }
-        for (int xi = x; xi < max_x; xi++) {
-            for (int yi = y; yi < max_y; yi++) {
-                int index = get_index(xi, yi);
-                tile* tile = arr + index;
+        for (int xi{x}; xi < max_x; xi++) {
+            for (int yi{y}; yi < max_y; yi++) {
+                int index{get_index(xi, yi)};
+                tile* tile{arr + index};
                 tile->is_wall = false;
             }
         }
+        ROOM_POINTS[i] = &randomInt;
     }
 }
 
 void print_map(tile* arr) {
-    for (int x = 0; x < WIDTH; x++) {
-        for (int y = 0; y < HEIGHT; y++) {
-            int i = get_index(x, y);
+    for (int x{0}; x < WIDTH; x++) {
+        for (int y{0}; y < HEIGHT; y++) {
+            int i{get_index(x, y)};
             std::cout << arr[i].return_tile();
         }
         std::cout << '\n';
@@ -85,7 +87,7 @@ void print_map(tile* arr) {
 
 int main() {
     // pointer to an array
-    tile* tiles = initialize_map();
+    tile* tiles{initialize_map()};
     create_rooms(tiles);
     print_map(tiles);
     std::getchar();
